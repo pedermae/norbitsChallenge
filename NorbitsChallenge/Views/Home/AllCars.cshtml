@@ -1,0 +1,62 @@
+﻿@model IEnumerable<NorbitsChallenge.Models.Car>
+
+@{
+    ViewData["Title"] = "AllCars";
+}
+
+<h2>All Cars</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LicensePlate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Brand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TireCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyID)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody> 
+
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LicensePlate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Brand)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TireCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanyID)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditCar", new {LicensePlate = item.LicensePlate}) |
+                @Html.ActionLink("Delete", "DeleteCar", new {LicensePlate = item.LicensePlate})
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

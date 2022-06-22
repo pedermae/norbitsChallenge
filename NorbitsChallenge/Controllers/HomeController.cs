@@ -29,10 +29,9 @@ namespace NorbitsChallenge.Controllers
         [HttpPost]
         public JsonResult Index(int companyId, string licensePlate)
         {
-            var tireCount = new CarDb(_config).GetTireCount(companyId, licensePlate);
-
+            var CarDb = new CarDb(_config);
+           
             var model = GetCompanyModel();
-            model.TireCount = tireCount;
 
             return Json(model);
         }
@@ -40,7 +39,6 @@ namespace NorbitsChallenge.Controllers
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
-
             return View();
         }
 
@@ -66,7 +64,73 @@ namespace NorbitsChallenge.Controllers
         {
             var companyId = UserHelper.GetLoggedOnUserCompanyId();
             var companyName = new SettingsDb(_config).GetCompanyName(companyId);
-            return new HomeModel { CompanyId = companyId, CompanyName = companyName };
+            var companyCars = new CarDb(_config).GetAllCarsById(companyId);
+            return new HomeModel { CompanyId = companyId, CompanyName = companyName, CompanyCars = companyCars };
+        }
+
+        public IActionResult AddCars(string LicensePlate)
+        {
+            Car car = new CarDb(_config).GetSpecificCar(LicensePlate);
+            return View(car);
+        }
+
+        public IActionResult AddCarsAction(Car car)
+        {
+            var carDb = new CarDb(_config);
+            carDb.AddCar(car.LicensePlate, car.Description, car.Model, car.Brand, car.TireCount, car.CompanyID);
+            var model = GetCompanyModel();
+            return View("Index", model);
+        }
+
+        public IActionResult DeleteCar(string LicensePlate)
+        {
+            Car car = new CarDb(_config).GetSpecificCar(LicensePlate);
+            return View(car);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteCarAction(string LicensePlate)
+        {
+            var carDb = new CarDb(_config);
+            carDb.DeleteCar(LicensePlate);
+            var model = GetCompanyModel();
+            return View("Index", model);
+        }
+
+        public IActionResult AllCars()
+        {
+            var carDb = new CarDb(_config).GetAllCars();
+            var model = GetCompanyModel();
+            return View(carDb);
+        }
+
+        public IActionResult SearchForCar()
+        {
+            ViewData["Message"] = "Søk etter bil";
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult SearchForCarAction([FromForm] string LicensePlate)
+        {
+            var carDb = new CarDb(_config).GetSpecificCar(LicensePlate);
+            return View("SearchForCar", carDb);
+        }
+
+        public IActionResult EditCar(string LicensePlate)
+        {
+            Car car = new CarDb(_config).GetSpecificCar(LicensePlate);
+            return View(car);
+        }
+
+        [HttpPost]
+
+        public IActionResult EditCarAction(Car car)
+        {
+            var carDb = new CarDb(_config);
+            carDb.UpdateCar(car.LicensePlate, car.Description, car.Model, car.Brand, car.TireCount, car.CompanyID);
+            var model = GetCompanyModel();
+            return View("Index", model);
         }
     }
 }

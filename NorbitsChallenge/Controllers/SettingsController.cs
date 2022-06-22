@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using NorbitsChallenge.Dal;
 using NorbitsChallenge.Models;
+using NorbitsChallenge.Helpers;
 
 namespace NorbitsChallenge.Controllers
 {
@@ -23,8 +24,6 @@ namespace NorbitsChallenge.Controllers
             var model = new SettingsViewModel();
             var settings = new SettingsDb(_config).GetSettings(companyId);
             model.Settings = settings;
-            
-
             return View(model);
         }
 
@@ -34,6 +33,14 @@ namespace NorbitsChallenge.Controllers
             new SettingsDb(_config).UpdateSetting(input.Setting, input.CompanyId);
 
             return RedirectToAction("Index", new {companyId = input.CompanyId});
+        }
+
+        [HttpPost]
+        public IActionResult ChangeCompany(SettingsInputModel input, int CompanyId)
+        {
+            UserHelper.CompanyId = CompanyId;
+            new SettingsDb(_config).UpdateSetting(input.Setting, CompanyId);
+            return RedirectToAction("Index", "Home", new {companyId = CompanyId});
         }
     }
 }

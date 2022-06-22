@@ -6,23 +6,31 @@
 }
 
 
+<h2>Biler til firmaId: @Model.CompanyId</h2>
+@foreach (Car car in Model.CompanyCars)
+{
+    <table style="width: 80%" class="table">
+    <tr>
+      <th>Brand</th>
+      <th>Model</th>
+      <th>Description</th>
+      <th>LicensePlate</th>
+      <th>TireCount</th>
+    </tr>
+    <tr>
+      <td>@car.Brand</td>
+      <td>@car.Model</td>
+      <td>@car.Description</td>
+      <td>@car.LicensePlate</td>
+      <td>@car.TireCount</td>
 
-<h2>
-    Vis biler for @Model.CompanyName
-</h2>
-<form asp-action="Index" data-ajax="true" data-ajax-method="POST" data-ajax-success="onSuccess">
-    <input type="hidden" name="companyId" value="@Model.CompanyId" />
-    <input type="text" name="licensePlate" />
-    <input type="submit" value="Søk" />
-</form>
-
-
-<div class="hidden" id="tireInfo">
-    <div>Denne bilen har <div id="tireCount" style="display: inline;"></div> dekk på dekkhotell</div>
-</div>
+    </tr>
+    </table>
+            
+}
     
 <hr/>
-<h4>Gå til <a asp-action="Index" asp-controller="Settings" asp-route-companyId="@Model.CompanyId">Innstillinger</a></h4>
+<h4><a asp-action="Index" asp-controller="Settings" asp-route-companyId="@Model.CompanyId">Angi Firmanavn</a></h4>
 
 @section Scripts
 {
