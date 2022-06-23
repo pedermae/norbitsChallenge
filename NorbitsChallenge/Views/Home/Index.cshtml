@@ -30,15 +30,4 @@
 }
     
 <hr/>
-<h4><a asp-action="Index" asp-controller="Settings" asp-route-companyId="@Model.CompanyId">Angi Firmanavn</a></h4>
-
-@section Scripts
-{
-    <script type="text/javascript">
-        function onSuccess(data) {
-            var tireCount = data.tireCount;
-            $('#tireCount').text(tireCount);
-            $('#tireInfo').removeClass('hidden');
-        }
-    </script>
-}
+<h4><a asp-action="Index" asp-controller="Settings" asp-route-companyId="@Model.CompanyId">Angi FirmaID</a></h4>

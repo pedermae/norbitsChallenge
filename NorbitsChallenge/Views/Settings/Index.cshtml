@@ -3,8 +3,7 @@
 <h2>Innstillinger</h2>
 
 <form asp-action="ChangeCompany">
-    @foreach (var setting in Model.Settings)
-    {
+    
         <div class="row">
             <div class="col-sm-2">
                 Innstilling
@@ -18,7 +17,4 @@
 
             </div>
         </div>
-        <input type="hidden" name="CompanyId" value="@setting.CompanyId"/>
-        <input type="hidden" name="Setting.Key" value="@setting.Key"/>
-    }
 </form>

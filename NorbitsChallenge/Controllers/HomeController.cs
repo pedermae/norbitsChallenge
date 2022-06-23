@@ -68,17 +68,16 @@ namespace NorbitsChallenge.Controllers
             return new HomeModel { CompanyId = companyId, CompanyName = companyName, CompanyCars = companyCars };
         }
 
-        public IActionResult AddCars(string LicensePlate)
+        public IActionResult AddCars()
         {
-            Car car = new CarDb(_config).GetSpecificCar(LicensePlate);
-            return View(car);
+            return View();
         }
 
         public IActionResult AddCarsAction(Car car)
         {
             var carDb = new CarDb(_config);
-            carDb.AddCar(car.LicensePlate, car.Description, car.Model, car.Brand, car.TireCount, car.CompanyID);
             var model = GetCompanyModel();
+            carDb.AddCar(car);
             return View("Index", model);
         }
 
@@ -128,7 +127,7 @@ namespace NorbitsChallenge.Controllers
         public IActionResult EditCarAction(Car car)
         {
             var carDb = new CarDb(_config);
-            carDb.UpdateCar(car.LicensePlate, car.Description, car.Model, car.Brand, car.TireCount, car.CompanyID);
+            carDb.UpdateCar(car);
             var model = GetCompanyModel();
             return View("Index", model);
         }

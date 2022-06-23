@@ -18,32 +18,6 @@ namespace NorbitsChallenge.Dal
             _config = config;
         }
 
-        public int GetTireCount(int companyId, string licensePlate)
-        {
-            int result = 0;
-
-            var connectionString = _config.GetSection("ConnectionString").Value;
-
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                using (var command = new SqlCommand {Connection = connection, CommandType = CommandType.Text})
-                {
-                    command.CommandText = $"select * from car where companyId = {companyId} and licenseplate = '{licensePlate}'";
-
-                    using (var reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            result = (int) reader["tireCount"];
-                        }
-                    }
-                }
-            }
-
-            return result;
-        }
-
         public List<Car> GetAllCarsById(int CompanyId)
         {
             var Cars = new List<Car>();
@@ -54,7 +28,8 @@ namespace NorbitsChallenge.Dal
                 connection.Open();
                 using (var command = new SqlCommand { Connection = connection, CommandType = CommandType.Text })
                 {
-                    command.CommandText = $"select * from car where CompanyId = {CompanyId}";
+                    command.Parameters.AddToTable("CompanyId", CompanyId);
+                    command.CommandText = $"select * from car where CompanyId = @CompanyId";
 
                     using (var reader = command.ExecuteReader())
                     {
@@ -117,28 +92,26 @@ namespace NorbitsChallenge.Dal
                 connection.Open();
                 using (var command = new SqlCommand { Connection = connection, CommandType = CommandType.Text })
                 {
-                    command.CommandText = $"select * from car where LicensePlate = '{LicensePlate}'";
+                    command.Parameters.AddToTable("LicensePlate", LicensePlate);
+                    command.CommandText = $"select * from car where LicensePlate = @LicensePlate";
 
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            
                            thisCar.LicensePlate = (string)reader["LicensePlate"];
                            thisCar.Description = (string)reader["Description"];
                            thisCar.Brand = (string)reader["Brand"];
                            thisCar.TireCount = (int)reader["TireCount"];
                            thisCar.Model = (string)reader["Model"];
                            thisCar.CompanyID = (int)reader["CompanyID"];
-
-         
                         }
                     }
                 }
             }
             return thisCar;
         }
-        public void AddCar(string LicensePlate, string Description, string Model, string Brand, int TireCount, int CompanyId)
+        public void AddCar(Car car)
         {
             var connectionString = _config.GetSection("connectionString").Value;
 
@@ -147,8 +120,14 @@ namespace NorbitsChallenge.Dal
                 connection.Open();
                 using (var command = new SqlCommand { Connection = connection, CommandType = CommandType.Text })
                 {
-                    command.CommandText = $"Insert into Car Values ('{LicensePlate}', '{Description}', '{Model}', '{Brand}', {TireCount}, {CompanyId})";
+                    command.Parameters.AddToTable("LicensePlate", car.LicensePlate);
+                    command.Parameters.AddToTable("Description", car.Description);
+                    command.Parameters.AddToTable("Model", car.Model);
+                    command.Parameters.AddToTable("Brand", car.Brand);
+                    command.Parameters.AddToTable("TireCount", car.TireCount);
+                    command.Parameters.AddToTable("CompanyId", car.CompanyID);
 
+                    command.CommandText = "Insert into Car values (@LicensePlate, @Description, @Model, @Brand, @TireCount, @CompanyId)";
                     command.ExecuteNonQuery();
                 }
             }
@@ -162,14 +141,14 @@ namespace NorbitsChallenge.Dal
                 connection.Open();
                 using (var command = new SqlCommand { Connection = connection, CommandType = CommandType.Text })
                 {
-                    command.CommandText = $"Delete from Car where LicensePlate = '{LicensePlate}'";
-
+                    command.Parameters.AddToTable("LicensePlate", LicensePlate);
+                    command.CommandText = "Delete from Car where LicensePlate = @LicensePlate";
                     command.ExecuteNonQuery();
                 }
             }
         }
 
-        public void UpdateCar(string LicensePlate, string Description, string Model, string Brand, int TireCount, int CompanyID)
+        public void UpdateCar(Car car)
         {
             var connectionString = _config.GetSection("connectionString").Value;
 
@@ -178,8 +157,13 @@ namespace NorbitsChallenge.Dal
                 connection.Open();
                 using (var command = new SqlCommand { Connection = connection, CommandType = CommandType.Text })
                 {
-                    command.CommandText = $"Update Car set Description = '{Description}', Model = '{Model}', Brand = '{Brand}', TireCount = {TireCount}, CompanyId = {CompanyID} where LicensePlate = '{LicensePlate}' ";
-
+                    command.Parameters.AddToTable("LicensePlate", car.LicensePlate);
+                    command.Parameters.AddToTable("Description", car.Description);
+                    command.Parameters.AddToTable("Model", car.Model);
+                    command.Parameters.AddToTable("Brand", car.Brand);
+                    command.Parameters.AddToTable("TireCount", car.TireCount);
+                    command.Parameters.AddToTable("CompanyId", car.CompanyID);
+                    command.CommandText = "Update Car set Description = @Description, Model = @Model, Brand = @Brand, TireCount = @TireCount, CompanyId = @CompanyId where LicensePlate = @Licenseplate";
                     command.ExecuteNonQuery();
                 }
             }
@@ -187,3 +171,4 @@ namespace NorbitsChallenge.Dal
         }
     }
 }
+

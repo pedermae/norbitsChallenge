@@ -21,10 +21,10 @@ namespace NorbitsChallenge.Controllers
 
         public IActionResult Index(int companyId)
         {
-            var model = new SettingsViewModel();
-            var settings = new SettingsDb(_config).GetSettings(companyId);
-            model.Settings = settings;
-            return View(model);
+            //var model = new SettingsViewModel();
+            //var settings = new SettingsDb(_config).GetSettings(companyId);
+            //model.Settings = settings;
+            return View();
         }
 
         [HttpPost]
@@ -36,10 +36,9 @@ namespace NorbitsChallenge.Controllers
         }
 
         [HttpPost]
-        public IActionResult ChangeCompany(SettingsInputModel input, int CompanyId)
+        public IActionResult ChangeCompany(int CompanyId)
         {
             UserHelper.CompanyId = CompanyId;
-            new SettingsDb(_config).UpdateSetting(input.Setting, CompanyId);
             return RedirectToAction("Index", "Home", new {companyId = CompanyId});
         }
     }
