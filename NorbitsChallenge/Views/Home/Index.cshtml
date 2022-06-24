@@ -27,7 +27,12 @@ tr:nth-child(even) {
 <body>
 <br>
 <br>
-<h2>Cars in system belonging to: @Model.CompanyName</h2>
+<h2>Cars in system belonging to company:</h2>
+<h3>ID: @Model.CompanyId</h3>
+@if (!String.IsNullOrEmpty(Model.CompanyName))
+    {
+        <h3>Company name: @Model.CompanyName</h3>
+    }
 <br>
 <br>
 @if (Model.CompanyCars.Count != 0)
