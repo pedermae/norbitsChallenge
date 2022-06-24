@@ -25,7 +25,7 @@ tr:nth-child(even) {
 </style>
 </head>
 <body>
-<h2>Biler til firmaId: @Model.CompanyId</h2>
+<h2>Cars belonging to company with ID: @Model.CompanyId</h2>
 <br>
 <br>
 @if (Model.CompanyCars.Count != 0)
@@ -54,4 +54,4 @@ tr:nth-child(even) {
 </body>
     
 <hr/>
-<h4><a asp-action="Index" asp-controller="Settings" asp-route-companyId="@Model.CompanyId">Angi FirmaID</a></h4>
+<h4><a asp-action="Index" asp-controller="Settings" asp-route-companyId="@Model.CompanyId">Enter CompanyID</a></h4>

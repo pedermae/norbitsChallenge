@@ -21,9 +21,6 @@ namespace NorbitsChallenge.Controllers
 
         public IActionResult Index(int companyId)
         {
-            //var model = new SettingsViewModel();
-            //var settings = new SettingsDb(_config).GetSettings(companyId);
-            //model.Settings = settings;
             return View();
         }
 

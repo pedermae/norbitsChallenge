@@ -105,7 +105,7 @@ namespace NorbitsChallenge.Controllers
 
         public IActionResult SearchForCar()
         {
-            ViewData["Message"] = "Søk etter bil";
+            ViewData["Message"] = "Search for car";
             return View();
         }
 
